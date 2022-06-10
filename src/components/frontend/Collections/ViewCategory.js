@@ -10,16 +10,22 @@ function ViewCategory()
 	const[category, setCategory] = useState([]);
 
 	useEffect(() => {
+		let isMountered = true;
 
 		axios.get(`/api/getCategory`).then(res=>{
-			if (res.data.status === 200) 
+			if (isMountered) 
 			{
-				
-				setCategory(res.data.category);
-				setLoading(false);
+					if (res.data.status === 200) 
+				{
+					
+					setCategory(res.data.category);
+					setLoading(false);
+				}
 			}
-
 		});
+		return () => {
+			isMountered = false;
+		}
 	});
 
 	if (loading) 
